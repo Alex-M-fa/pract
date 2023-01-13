@@ -1,32 +1,33 @@
-from tkinter import *
+import tkinter as tk
 
 
-root = Tk()
+root = tk.Tk()
 root.title("Силы Сопротивления")
 width = 600
 height = 600
-c = Canvas(root, width=width, height=height, bg="black")
+c = tk.Canvas(root, width=width, height=height, bg="black")
 c.pack()
 c.create_rectangle(0, height//2, width+2, height+2, fill='grey')
 
 
-class Ball:
+class Rec:
 
-    def __init__(self, c, x1, y1, x2, y2, radius, mass, color="white"):
+    def __init__(self, c, x1, y1, x2, y2, a, b, mass, color="white"):
 
         self.x1 = x1
         self.y1 = y1
         self.x2 = x2
         self.y2 = y2
-        self.radius = radius
+        self.a = a
+        self.b = b
         self.c = c
 
         self.v = 4
-        self.F_str = 0.015 * self.v * radius
+        self.F_str = 0.015 * self.v * self.a * self.b
         self.mass = mass
         self.Acceleration = (self.F_str / mass) * 50
-        self.ball = c.create_oval(self.x1 - self.radius, self.y1 - self.radius, self.x2 +
-                                  self.radius, self.y2 + self.radius, fill=color, outline='white', width=2)
+        self.ball = c.create_rectangle(self.x1 - self.a, self.y1 - self.b, self.x2 +
+                                self.a, self.y2 + self.b, fill=color, outline='white', width=2)
 
     def move_ball(self):
         if c.coords(self.ball)[3] < height//2:
@@ -77,48 +78,14 @@ def esc(event):
 root.bind('<Escape>', esc)
 
 
-r1 = 40
-mass1 = 60
-ball1 = Ball(c, 100, 20, 100,
-             20, r1, mass1, color="#a0a0a0")
+# Создание частиц
+# <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+a = 20
+b = 10
+mass1 = 601
+ball1 = Rec(c, 100, 20, 100, 20, a, b, mass1, color="#a0a0a0")
 ball1.move_ball()
 
-r2 = 25
-mass2 = 50
-ball2 = Ball(c, 200, 20, 200,
-             20, r2, mass2, color="#a0a0a0")
-ball2.move_ball()
 
-r3 = 20
-mass3 = 40
-ball3 = Ball(c, 300, 20, 300,
-             20, r3, mass3, color="#a0a0a0")
-ball3.move_ball()
-
-r4 = 36
-mass4 = 75
-ball4 = Ball(c, 400, 20, 400,
-             20, r4, mass4, color="#a0a0a0")
-ball4.move_ball()
-
-r5 = 15
-mass5 = 10
-ball5 = Ball(c, 510, 20, 510,
-             20, r5, mass5, color="#a0a0a0")
-ball5.move_ball()
-
-
-r6 = 25
-mass6 = 10
-ball6 = Ball(c, 570, 20, 570,
-             20, r6, mass6, color="#a0a0a0")
-ball6.move_ball()
-
-
-r7 = 10
-mass7 = 10
-ball7 = Ball(c, 120, 20, 120,
-             20, r7, mass7, color="#a0a0a0")
-ball7.move_ball()
 
 root.mainloop()

@@ -1,40 +1,39 @@
 from tkinter import *
-from random import randint
-
-
-class Raindrop:
-    def __init__(self, canvas, x, y, yspeed, length, color='#4682B4'):
-        self.x = x
-        self.y = y
-        self.yspeed = yspeed
-        self.length = length
-        self.canvas = canvas
-        self.line = canvas.create_line(self.x, self.y, self.x, self.y+length, fill=color)
-
-    def move(self):
-        self.y += self.yspeed
-        self.canvas.move(self.line, 0, self.yspeed)
-
-        # При падении за нижний край холста передвигаем каплю выше верхнего края холста
-        if self.y > 600:
-            self.canvas.move(self.line, 0, - (600 + self.length))
-            self.y -= 600 + self.length
-
-
-def draw_rain():
-    for drop in drops:
-        drop.move()
-
-    root.after(8, draw_rain)
-
+import math
+import time
 
 root = Tk()
-canvas = Canvas(root, width=600, height=600)
-canvas.pack()
+root.title("Задание 1")
+window = Canvas(root, width=600, height=600)
+window.pack()
 
-drops = [Raindrop(canvas, x=randint(0, 600), y=randint(0, 600),
-                  yspeed=randint(1, 3), length=randint(5, 20)) for i in range(150)]
+a = 30
+b = 30
+radius = 200
 
-draw_rain()
+t = 0
+while t < 2 * math.pi:
+    coord_x = radius * math.cos(t) + a + 200
+    coord_y = radius * math.sin(t) + b + 200
+    coord_x1 = radius * math.cos(t + 0.1) + a + 200
+    coord_y1 = radius * math.sin(t + 0.1) + b + 200
+    print('x=' + str(coord_x) + ' y=' + str(coord_y) + ' x1=' + str(coord_x1) + ' y1=' + str(coord_y1))
+    window.create_line(coord_x, coord_y, coord_x1, coord_y1)
+    t += 0.1
+
+t = 0
+radius2 = 10
+coord_x = radius * math.cos(t) + a + radius
+coord_y = radius * math.sin(t) + b + radius
+ball = window.create_oval(coord_x - radius2, coord_y - radius2, coord_x + radius2, coord_y + radius2, fill="#0f1111")
+while True:
+    coord_x = radius * math.cos(t) + a + radius
+    coord_y = radius * math.sin(t) + b + radius
+    coord_x1 = radius * math.cos(t + 0.1) + a + radius
+    coord_y1 = radius * math.sin(t + 0.1) + b + radius
+    t += 0.1
+    window.move(ball, coord_x1 - coord_x, coord_y1 - coord_y)
+    root.update()
+    time.sleep(0.04)
 
 root.mainloop()
